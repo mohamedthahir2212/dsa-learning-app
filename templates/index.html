@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}DSA Lesson Generator{% endblock %}
+
+{% block content %}
+<h1>DSA Lesson Generator</h1>
+
+<form method="post" action="{{ url_for('generate') }}">
+    <div>
+        <label for="topic">Topic:</label><br>
+        <select name="topic" id="topic" required>
+            <option value="" disabled {{ 'selected' if not selected_topic else '' }}>Select a topic</option>
+            {% for key, value in topics.items() %}
+                <option value="{{ key }}" {{ 'selected' if selected_topic == key else '' }}>{{ value }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div style="margin-top: 1rem;">
+        <label for="difficulty">Difficulty:</label><br>
+        <select name="difficulty" id="difficulty" required>
+            <option value="" disabled {{ 'selected' if not selected_difficulty else '' }}>Select a level</option>
+            {% for diff in difficulties %}
+                <option value="{{ diff }}" {{ 'selected' if selected_difficulty == diff else '' }}>{{ diff }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" style="margin-top: 1rem;">Generate Lesson</button>
+</form>
+
+{% if lesson %}
+    <h2 style="margin-top: 2rem;">Lesson on {{ selected_topic }} ({{ selected_difficulty }})</h2>
+    <div style="white-space: pre-wrap; background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 1rem;">
+        {{ lesson }}
+    </div>
+{% endif %}
+{% endblock %}
