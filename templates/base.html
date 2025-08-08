@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DSA Learning App{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+        }
+        header nav a {
+            color: #fff;
+            margin-right: 1rem;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .flash {
+            background-color: #ffdddd;
+            border: 1px solid #ff5a5a;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            color: #b30000;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            {% if current_user.is_authenticated %}
+                <span>Logged in as {{ current_user.username }}</span>
+                | <a href="{{ url_for('index') }}">Home</a>
+                | <a href="{{ url_for('chat') }}">Chat</a>
+                {% if current_user.is_admin %}
+                | <a href="{{ url_for('view_logs') }}">Admin Logs</a>
+                {% endif %}
+                | <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a> | <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="flash">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
